@@ -1,2 +1,4 @@
-# Study
- My main work at the university
+# My main work at the university
+
+
+В данном репозиторие представлены самые трудные работы из университета
