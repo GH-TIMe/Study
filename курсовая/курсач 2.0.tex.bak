@@ -1,0 +1,1086 @@
+\documentclass[a4paper]{scrreprt}
+	\usepackage[14pt]{extsizes} 
+    \usepackage{parskip}
+    \setcounter{secnumdepth}{0} %Suppress section numbers
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter}
+    \usepackage{needspace}
+    \usepackage[newfloat, cache=false]{minted}
+    \usemintedstyle{jupyter_python}
+    
+    \usepackage[T2A, T1]{fontenc}
+    \usepackage[english, russian]{babel}
+    \usepackage{fontspec}
+    \defaultfontfeatures{Ligatures=TeX,Renderer=Basic}
+    \setmainfont[Ligatures={TeX, Historic}]{Times New Roman}
+    \setsansfont{Times New Roman}
+    \setmonofont{Courier New}
+
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+	\usepackage{animate}    
+    \usepackage{floatrow,graphicx,calc}
+    \DeclareFloatSeparators{mysep}{\hspace{3cm}}
+    \thisfloatsetup{floatrowsep=mysep}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage[margin=10pt, font=small, labelformat=empty]{caption}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage[left=2.5cm, right=1.5cm, vmargin=2.5cm]{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % ExteАnded unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    \let\Oldtex\TeX     % provide compatibility with nbconvert <= 5.3.1
+    \let\Oldlatex\LaTeX % pre-included in nbconvert > 5.3.1 so redundant
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    
+    
+    
+    
+    
+% Pygments definitions
+    
+    \makeatletter
+    \newcommand*\@iflatexlater{\@ifl@t@r\fmtversion}
+    \@iflatexlater{2016/03/01}{
+	    \newcommand{\wordboundary}{4095}}{
+	    \newcommand{\wordboundary}{255}}
+    \makeatother
+
+    \newif\ifcode
+    \codefalse
+    \definecolor{Grey}{rgb}{0.40,0.40,0.40}
+    %If using XeLaTeX, use magic to not highlight . operators with purple.
+    \ifdefined\XeTeXcharclass
+    \XeTeXinterchartokenstate = 1
+    \newXeTeXintercharclass \mycharclassGrey
+    \XeTeXcharclass `. \mycharclassGrey
+    \XeTeXinterchartoks 0 \mycharclassGrey   = {\bgroup\ifcode\color{Grey}\else\fi}
+
+    \XeTeXinterchartoks \wordboundary \mycharclassGrey = {\bgroup\ifcode\color{Grey}\else\fi}
+
+    \XeTeXinterchartoks \mycharclassGrey 0   = {\egroup}
+    \XeTeXinterchartoks \mycharclassGrey \wordboundary = {\egroup}
+    \fi %end magical operator highlighting
+    %End Reconfigured Pygments
+    
+   
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % needed definitions
+    \newif\ifleftmargins
+    \newlength{\promptlength}
+
+    % cell style settings
+        \leftmarginsfalse
+
+    
+    % prompt
+    \newcommand{\prompt}[3]{
+        \needspace{1.1cm}
+        \settowidth{\promptlength}{ #1 [#3] }
+        \ifleftmargins\hspace{-\promptlength}\hspace{-5pt}\fi
+        {\color{#2}#1 [#3]:}
+        \ifleftmargins\vspace{-2.7ex}\fi
+    }
+    
+    
+    % environments
+    \newenvironment{OutVerbatim}{\VerbatimEnvironment%
+        \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+            \begin{Verbatim}
+            }{
+            \end{Verbatim}
+        \end{tcolorbox}
+    }
+    
+    %Updated MathJax Compatibility (if future behaviour of the notebook changes this may be removed)
+    \renewcommand{\TeX}{\ifmmode \textrm{\Oldtex} \else \textbackslash TeX \fi}
+    \renewcommand{\LaTeX}{\ifmmode \Oldlatex \else \textbackslash LaTeX \fi}
+    
+    % Header Adjustments
+    \renewcommand{\paragraph}{\textbf}
+    \renewcommand{\subparagraph}[1]{\textit{\textbf{#1}}}
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+   
+    \bibliographystyle{unsrt}
+
+    \begin{document}
+    \fontspec{Times New Roman}{
+% НАЧАЛО ТИТУЛЬНОГО ЛИСТА
+\begin{center}
+\textbf{\large{Федеральное государственное образовательное бюджетное учреждение высшего образования}\\
+\large{«ФИНАНСОВЫЙ УНИВЕРСИТЕТ ПРИ ПРАВИТЕЛЬСТВЕ РОССИЙСКОЙ ФЕДЕРАЦИИ»}\\ 
+\normalsize{Факультет прикладной математики и информационных технологий}\\
+ \hfill \break \break 
+\large{Департамент анализа данных, принятия решений и финансовых
+технологий.}\\}
+\hfill\break
+\hfill \break
+\large{\textbf{Курсовая работа по математической статистике}}\\
+{на тему: «Применение распределения Стьюдента, как альтернатива нормальному и другим устойчивым законам статистики»}\\
+\hfill \break
+\hfill \break
+{\textbf{Вид исследуемых данных: «Голубые фишки, торгующиеся на Московской Бирже»}}\\
+\hfill \break
+\end{center}
+\begin{flushright}
+\textbf{\large{Выполнил:}\\}
+\large{Студент группы ПМ 2-1}\\
+\large{Аверьянов Тимофей Сергеевич}\\
+\hfill \break
+\hfill \break
+\large{\textbf{Проверила К.э.н., доцент ДАД, доцент:}}\\
+\large{Гринева Наталья Владимировна}\\
+\hfill \break
+\end{flushright}
+\begin{center} \large{Москва 2019} \end{center}
+\thispagestyle{empty} % выключаем отображение номера для этой страницы
+% КОНЕЦ ТИТУЛЬНОГО ЛИСТА
+
+    
+\setcounter{tocdepth}{5}
+\tableofcontents
+\newpage
+    
+\section{Введение} 
+
+\qquad В курсовой работе проверяется гипотеза о том, что логорифмические доходности "<голубых фишек"> компаний, распределённые по нормальному закону, могут аппроксимировать распределением Стьюдентом при достаточно большом $n$.
+
+\qquad На сегодняшний день по данным фондового рынка "<голубые фишки"> являются одним из самых ликвидных активов. Это подтвержданется высоким коэффициентом ликвидности акций (приблизительно 0.75) крупных компаний торгующихся на Московской Бирже. Покупая акции 1-й группы ("<голубые фишки">), инвестор может быть уверен, что при необходимости ему легко удастся продать даже достаточно крупный портфель акций в короткий срок. В связи с их ликвидностью, "<голубые фишки"> обладают высокой популярностью среди инвесторов. Поэтому анализ этих данных высоковостребован и является актуальным на данный момент.
+
+\qquad Стоит отметить, что логорифмические доходности, распределенные по нормальному закону встречаются в финансовой среде довольно-таки редко, обычно разброс показателей доходности отклоняется от нормального распределения за счёт смещения вправо. Это связано с тем, что доходность и убытки с акций может быть сколь угодно большой величиной. В связи с этим возникает задача моделирования динамики биржевых котировок ценных бумаг с заданным показателем риска и доходности при нормальном распределении доходности. 
+
+Для проверки гипотезы были поставлены следующие \textbf{цели:}
+\begin{itemize}
+\item Проверить подчиняются ли логдозодности по "<голубым фишкам"> устойчивым законам статистики. 
+\item Проверить действительно ли логдоходности компаний, тогрующихся на Московской Бирже, можно анализировать с помощью распределения Стьюдента.
+\end{itemize}
+
+\qquad В приложениях можно найти все коды программ, таблицы необходимые для данной курсовой работы. Для написания программ использовался Python 3.7.3 в качестве IDLE Jupyter Notebook, так как по-моему мнению, в нём очень хорошая визуализация данных, удобная для сохранения в pdf формат. Для проверки на нормальность буду использовать критерии Колмогорова и Смирнова с вычислением \texttt{p-value}, а также вспомогательный график квантилей. 
+
+\qquad Объём курсовой работы состаляет 20 страниц (29 страниц с приложениями). Курсовая работа разделена на четыре части:
+
+\begin{itemize}
+
+\item Первая часть включает в себя теоретическую справку, где демонстрируется аппроксимация нормального закона распределения распределением Стьюдента на модельных данных, сгенерированных заранее распределёнными по нормальному закону. Так же рассмотрен случай аппроксимации нормального закона c $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$. 
+Приведена справка по критериям Колмогорова и Смирнова, с помощью которых в основном и будет проверяться нормальность доходностей. Здесь же приведёно определение \texttt{p-value}.
+
+\item Вторая часть заключается в предварительном анализе данных. Конкретно в данном разделе идёт подготовка данных для дальнейшей работы с ними, строится графики доходностей цен закрытия акций и вариационный ряд. После чего данные в следующих пунктах будут проверяться по критерию Колмогорова-Смирнова на нормальность.
+
+\item В третьей части проверяется работоспособность критерия Колмогорова-Смирнова на модельных данных и приводится вспомогательный график квантилей, в качестве дополнительного доказательства. Также в этом пункте вычисляется приблизительное значение мощности критерия, которое скажет нам о применимости критерия Колмогорова-Смирнова на нашей выборке.
+
+\item Последняя часть является основной, здесь уже с использованием реальных данных, проводится проверка гипотезы. Строятся графики квантилей двух распределений и проводится тест Колмогорова-Смирнова на однородность двух выборок.
+
+\end{itemize}
+
+\section{Теоретическая часть}
+
+\subsection{Распределение Стьюдента и центральная предельная теорема}
+
+\qquad Плотность распределения Стьюдента можно записать через бета-функцию Эйлера $B$:
+$$
+{\displaystyle f_{t}(y)={\frac {1}{{\sqrt {n}}\,\mathrm {B} ({\frac {1}{2}},{\frac {n}{2}})}}\left(1+{\frac {y^{2}}{n}}\right)^{\!-{\frac {n+1}{2}}}}
+$$
+
+\qquad Существует центральная предельная теорема, с помощью которой выборку, распределённую по нормальному закону можно аппроксимировать с помощью распределения Стьюдента.
+\underline{Теорема Ляпунова.} Пусть $\xi_1, \xi_2, \ldots, \xi_n, \ldots$ есть бесконечно большая последовательность независимых одинаково распределённых случайных величин, имеющих конечное математическое ожидание и дисперсию. Обозначим $\mu$ и $\sigma^2$, соответственно. Тогда $\displaystyle{\frac{\bar{S_n} - \mu}{\sigma \diagup \sqrt{n}} \rightarrow N(0, 1)}$, где $\bar{S_n} = \displaystyle{\frac{1}{n}\sum_{i=1}^n \xi_i}$ по распределению при $\displaystyle{n\to \infty }$.
+
+\qquad При $n$ превышающем 100 распределение Стьюдента практически соответсвует нормальному. При $n = 30 - 100$ различия между Стьюдентом и нормальным распределением составляют несколько процентов. Поэтому малыми выборками считаются выборки объёма меньше 30, большими объёмом больше 100. Конечно, приведённые границы не являются корректными в 100\% случаев, но в общем случае, обычно эти границы соблюдаются.
+
+\qquad На Рис. 1 отражается аппроксимация с помощью плотности распределения Стьюдента при увеличении $n$ степеней свободы. На графике наглядно можно наблюдать, как по мере возрастания $n$ функция плотность всё больше и больше напоминает стандартное нормальное распределение. (Приложение 2 №1). В результате чего для того, чтобы аппроксимировать выборку, распределённую по нормальному закону, потребуется подобрать достаточно большое кол-во степеней свободы $n$, в следующих разделах мы рассмотрим понятие p-value и уже в практической части будем подбирать такое кол-во степеней свободы, которое необходимо для достаточной аппроксимации нормального закона распределения.
+	
+	\begin{figure}[H]
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_0.png}
+    \captionof{figure}{\texttt{Рис. 1. Апрроксимация распределением Стьюдента}}
+    \end{center}
+	\end{figure}
+    
+\qquad Стандартное отклонение $t$-распределения это $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$ возникает естественный вопрос, если $N(0, \sigma_y)$, то распределение даёт лучшую аппроксимацию? На этот вопрос можно ответить, используя график $"t \quad and \quad N(0, \sigma_y)"$ (Анимация 1). В Приложении 2 №2 приведён код, который позволяет в интерактивном режиме изучить это вопрос, но так как pdf формат тоже может поддерживать интерактивные объекты, то на следующих двух графиках(Анимация 1, 2) можно сравнить процесс сходимости функции плотности распределения Стьюдента к нормальному закону. Так же для дополнительной наглядности приведу график квантилей при $df = 31$ (Рис. 2, 3).
+
+\begin{figure}[H]
+\begin{center}
+   	\animategraphics[controls, loop]{10}{sigma}{3}{100}
+	\captionof{figure}{\texttt{Анимация 1. Функция плотности с $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$}}
+\end{center}
+\end{figure}
+\begin{figure}[H]
+\begin{center}
+   	\animategraphics[controls, loop]{10}{standartsigma}{3}{100}
+   	\caption{\texttt{Анимация 2. Функция плотности с $\sigma_y = 1$}}
+\end{center}
+\end{figure}
+\begin{figure}[H]
+\begin{floatrow}
+\ffigbox[\FBwidth+1cm]{\caption{\texttt{Рис. 2. Q-Q plot для $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$}}}%
+{\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Noname_1.png}}
+\ffigbox[\FBwidth+1cm]{\caption{\texttt{Рис. 3. Q-Q plot для $\sigma_y = 1$}}}%
+{\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Noname_3.png}}
+\end{floatrow}
+\end{figure}
+%\begin{figure}[H]
+
+%\end{figure}
+
+\qquad Возможно не совсем корректно сравнивать, два графика (Рис. 2, 3), тем не менее при $v = 31$ на рисунке 2 видно, что график с $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$ аппроксимируется хуже, это видно как на графике плотностей (Анимация 1, 2), так и на графике квантилей (Рис. 2, 3) (на рисунке 2 происходит более сильное отклонение от прямой в $45^o$).
+    
+\subsection{Критерий Колмогорова}
+
+\qquad Для проверки гипотезы $H_0: F(x) = F_o(x)$ (о соответсвии закону $F(x)$) будем использовать критерий Колмогорова. Данный критерий очень часто используется на практике, так как удобен в применении. Статистикой критерия Колмогорова является 
+$$
+{\displaystyle D_{n}=\sup _{x}|F_{n}(x)-F(x)|,}
+$$
+где $F(x)$~-- предполагаемая модель. А $F_n(x)$ имеет следующий вид:
+$$
+{\displaystyle F_n(x) = \frac{1}{n} \sum_{i = 1}^n I_{X_i \leqslant x}},
+$$
+где $I_{X_i \leqslant x}$ указывает попало ли наблюдение $X_i$ в область $(- \infty; x]:$
+$$
+{\displaystyle I_{X_{i}\leqslant x}={\begin{cases}1,&X_{i}\leqslant x;\\0,&X_{i}>x.\end{cases}}}
+$$
+
+\qquad Пусть нулевая гипотеза $H_0: F(x) = F_o(x)$. Тогда по теореме Колмогорова для введённой статистики справедливо: 
+$$
+{\displaystyle \forall t>0\colon \lim _{n\to \infty }P({\sqrt {n}}D_{n}\leqslant t)=K(t)=\sum _{j=-\infty }^{+\infty }(-1)^{j}e^{-2j^{2}t^{2}}.}
+$$
+\qquad Для того, чтобы принять решение по критерию Колмогорова нужно посмотреть на значение статистики $\sqrt{n}D_n$, если $\sqrt{n}D_n$ превышает процентную точку распределения Колмогорова $K_\alpha$ при заданном уровне значимости $\alpha$, то гипотеза $H_0: F(x) = F_o(x)$ отвергается. Иначе гипотеза принимается на уровне значисоти $\alpha$.
+
+\qquad Одной из целей является проверка нормальности, то мы хотим узнать подчиняется ли выборка нормальному закону и так как нам всё известно о функции распределения нормального закона, то логично будет воспользоваться критерием Смирнова.
+
+\subsection{Критерий Смирнова}
+
+\qquad В критериях по типу Колмогорова измеряется расстояние между эмпирическим $F_n(x)$ и теоретическим $F(x, \theta)$ распределениями по формуле:
+$$
+D_n = \sup_{|x| < \infty} |F_n(x) - F(x, \theta)|
+$$
+, где $n$~-- объём выборки. Критерий Смирнова применяется тогда и только тогда, когда $F(x) = F_0(x)$ известна полностью. Мерами близости для данного критерия являются статистики:
+
+$$
+D_n^{+} = \sup_x[F_n(x) - F_0(x)]; \quad D_n^{-} = \sup_x[F_0(x) - F_n(x)]
+$$     
+
+\qquad Обе статистики в тех же условиях одинаково распределены и $D_n = \max(D_n^{+}, D_n^{-})$, поэтому особых таблиц для критерия Смирнова не требуется.
+
+\qquad При практической реализации критериев Колмогорова-Смирнова можно использовать статистику с поправкой Большего, сначала по выборке строится вариационный ряд ($x_1, x_2, \ldots, x_n$ — упорядоченные по возрастанию выборочные значения), а статистики представляются в виде:
+$$
+D_n^{+} = \max_{1 \leqslant i \leqslant n} \left(\frac{i}{n} - F_0(x_i) \right);
+$$
+$$
+D_n^{-} = \max_{1 \leqslant i \leqslant n} \left(F_0(x_i)- \frac{i-1}{n} \right);
+$$
+$$
+D_n = \max_{1 \leqslant i \leqslant n} (D_n^{+}, D_n^{-}),
+$$
+где $F_0(x)$~-- значение гипотетической функции распределения, взятой в $i$~- ой точке вариационного ряда. При справедливости простой проверяемой гипотезы статистика 
+$$
+S_k = \displaystyle{\frac{6nD_n + 1}{6 \sqrt{n}}}
+$$
+подчиняется закону распределения Колмогорова $K(S)$. Недостаток данного критерия в том, что мы полностью знаем гипотетическую функцию распределения. Но поправка Большего не привлекла внимание иностранных специалистов и поэтому все в основном пользуются cтатистикой: $\sqrt{n}D_n$ (в дальнейшем будет приведена фукция \texttt{kstest} из \texttt{Python}, которая тоже использует статистику $\sqrt{n}D_n$). В результате чего вынуждены учитывать значение $n$. Считается, что Критерий Колмогорова-Смирнова начинает правильно работать на выборке в районе 80. На выборках при $n = 20-40$, критерий Колмогорова-Смирнова часто будет совершать ошибку второго рода (это утверждение будет наглядно продемонстрировано в дальнейшем с помощью Приложения 2 № 4), так как не сможет найти отличий, что непосредственно влияет на правильность результата.
+
+\subsection{Значение вероятности \texttt{P-value}}
+
+\qquad Для того, чтобы вычислить наименьшее критическое значение $\alpha$ при котором будет приниматься гипотеза $H_0: F(x) = F_o(x)$ (по критерию Колмогорова), нам понадобится величина \texttt{p-value}. \texttt{P-value} -- это наименьший уровень значимости, для которого вычисленная статистика ведёт к отказу от нулевой гипотезы $H_0: F(x) = F_o(x)$. Чем ниже \texttt{p-value}, тем больше вероятность отклонить нулевую гипотезу $H_0$.
+
+\qquad Таким образом решение по полученному \texttt{p-value} об принятии или отклонении нулевой гипотезы соответствует риску совершения ошибки первого рода (отклонения истинной нулевой гипотезы $H_0$). Если \texttt{p-value} меньше уровня значимости $\alpha$ (p-value $< \alpha$), то нулевая гипотеза $H_0: F(x) = F_o(x)$ отклоняется, иначе принимается. 
+
+\qquad Данную величину удобно использовать для проверки данных на однородность, так как эта величина соответсвует наименьшему уровню доверия к анализируемой выборке.	
+    
+%\qquad В финансах не часто можно найти данные распределённые по нормальному закону распределения. Но если такие данные встечаются, то не всегда они будут распределены по стандартному нормальному закону распределения с параметрами $N(0, 1)$. Поэтому для аппроксимации нормального закона Стьюдентом правильно будет использовать нецентральное распределение Стьюдента. Данное распределение в отличии от стандартного распределения Стьюдента имеет коэффициент сдвига $\mu$.
+%$${\displaystyle (Z+\mu ){\sqrt {\frac {n}{V}}}.}$$
+
+%Построим график квантилей для $"t$ and $N(0,1)"$, $"t$ and $N(0,\sigma_y)"$ и сравним их.(Приложение 2) В Приложении [2] можно увидеть, что графики почти одинаковые. Таким образом, можно заметить, что аппроксимация при $\sigma_y =\displaystyle{\sqrt{\frac{v}{v - 2}}}$ не будет быстрее обычной.
+
+\section{Практичеакая часть}
+
+\subsection{Предварительный анализ данных}
+
+\qquad В качестве исходных данных взяты данные по акциям компаний, торгующихся на Московской Бирже. Так как нормальность проявлялась не во все периоды торгов компаний, то для разных компаний брались разные года торгов. В следующей таблице (Таблица 1) приведены: названия компаний, тикеры компаний, года торгов, соответствующие файлы с данными.
+
+\begin{table}[H]
+\begin{center} \texttt{
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Название компании & Тикер & Год & Название файла \\ 
+\hline 
+Лукойл & LKOH & 2012 & LKOH\_ 000105\_ 190314 \\ 
+\hline 
+Газпром ао & GAZP & 2015 & GAZP\_ 000105\_ 190314 \\ 
+\hline 
+ВТБ & VTBR & 2015 & VTBR\_ 000105\_ 190314 \\ 
+\hline 
+Сбербанк & SBER & 2013 & SBER\_ 000105\_ 190314 \\ 
+\hline 
+Акрон & AKRN & 2017 & AKRN\_ 000105\_ 190314 \\ 
+\hline 
+\end{tabular} }
+\end{center}
+\caption{\texttt{Таблица 1. Общая информация}}
+\end{table}
+
+\qquad В файлах с данными, предварительный анализ, проводился по данным из столбца "<<CLOSE>"> (то есть по ценам закрытия). Используя программу из Приложения 2 №3, можно увидеть графики цен закрытия акций компаний(Анимация 3). 
+	
+	\begin{figure}[H]
+	\centering
+		\animategraphics[controls = step, loop]{0.8}{analiz}{0}{4}
+	\caption{\texttt{Анимация 3. График цен закрытия}}
+	\end{figure}
+
+    
+\qquad По критерию Колмогорова-Смирнова построим вариационный ряд для каждой компании (Таблица 2). Таблица получилась укороченной в силу того, что данные были разной длинны, но убралось всего лишь 2-3 значения, что не существенно повлияет на результат (полную таблицу можно посмотреть в \texttt{Jupyter Notebook}).
+
+\begin{table}[H]
+    \begin{center}
+    \begin{tabular}{lrrrrr}
+\toprule
+{} &    LKON &    GAZP &     VTBR &    SBER &    AKRN \\
+\midrule
+0   &  1590.8 &  130.90 &  0.05690 &   88.23 &  2917.0 \\
+1   &  1593.7 &  131.50 &  0.05790 &   88.88 &  2933.0 \\
+2   &  1601.0 &  131.50 &  0.05800 &   89.39 &  2933.0 \\
+3   &  1629.0 &  131.59 &  0.05805 &   89.48 &  2950.0 \\
+4   &  1639.4 &  132.20 &  0.05814 &   89.57 &  2955.0 \\
+5   &  1640.0 &  132.20 &  0.05826 &   89.82 &  2960.0 \\
+6   &  1643.0 &  132.25 &  0.05850 &   90.06 &  2975.0 \\
+7   &  1645.8 &  132.90 &  0.05870 &   90.33 &  2995.0 \\
+8   &  1657.0 &  133.20 &  0.05879 &   90.45 &  3004.0 \\
+9   &  1667.0 &  133.20 &  0.05891 &   90.63 &  3010.0 \\
+10  &  1687.0 &  133.80 &  0.05903 &   91.14 &  3012.0 \\
+11  &  1688.9 &  133.85 &  0.05950 &   91.29 &  3029.0 \\
+12  &  1702.6 &  133.95 &  0.05984 &   91.30 &  3029.0 \\
+13  &  1705.0 &  134.30 &  0.05991 &   91.50 &  3029.0 \\
+14  &  1706.8 &  134.40 &  0.06000 &   91.75 &  3031.0 \\
+15  &  1708.3 &  134.48 &  0.06000 &   91.77 &  3046.0 \\
+\ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\
+234 &  1982.7 &  154.20 &  0.08001 &  106.80 &  3848.0 \\
+235 &  1985.9 &  154.80 &  0.08002 &  106.90 &  3850.0 \\
+236 &  1988.0 &  154.99 &  0.08021 &  107.04 &  3851.0 \\
+237 &  1990.0 &  155.25 &  0.08025 &  107.08 &  3852.0 \\
+238 &  1993.7 &  155.35 &  0.08035 &  107.20 &  3857.0 \\
+239 &  1995.0 &  155.50 &  0.08039 &  107.62 &  3867.0 \\
+240 &  1998.9 &  155.52 &  0.08040 &  107.75 &  3869.0 \\
+241 &  2000.2 &  156.33 &  0.08050 &  107.80 &  3870.0 \\
+242 &  2003.6 &  157.70 &  0.08052 &  107.82 &  3870.0 \\
+243 &  2007.0 &  158.00 &  0.08105 &  108.36 &  3874.0 \\
+244 &  2007.4 &  159.00 &  0.08105 &  108.48 &  3876.0 \\
+245 &  2007.6 &  159.20 &  0.08107 &  108.73 &  3881.0 \\
+246 &  2011.0 &  160.19 &  0.08150 &  108.80 &  3885.0 \\
+247 &  2011.2 &  160.90 &  0.08175 &  108.86 &  3890.0 \\
+248 &  2013.2 &  162.40 &  0.08190 &  109.59 &  3896.0 \\
+249 &  2014.4 &  163.00 &  0.08260 &  110.74 &  3898.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{\texttt{Таблица 2. Цены закрытия акций}}
+\end{table}
+
+
+\subsection{Проверка работоспособности программ и мощность критерия}
+
+\qquad Чтобы проверить правильность работы критерия Колмогорова-Смирнова в библиотеке \texttt{scipy.stats} была сгенерирована выборка заранее распределённая по нормальному закону, после чего вручную вычисляется статистика критерия и сравнвается с тем, что выдаёт \texttt{kstest} в Python. Таблица расчётов статистики по критерию Колмогорова-Смирнова приведена в Приложении 2 №4. 
+
+    $\displaystyle \texttt{Cтатистика посчитанная вручную = }0.04396103823906172$
+
+    $\displaystyle \texttt{Cтатистика через kstest = }0.04396103823906172$
+
+\qquad Статистики совпали, осталось проверить правильность вывода величины \texttt{p-value}.
+
+    $\displaystyle \texttt{p-value = }0.7421984885908248$
+
+\qquad Результат показывает, что \texttt{p-value} больше чем критическое значение $\alpha = 0.05$, тогда гипотеза $H_0$ принимается, следовательно \texttt{kstest} работает корректно, а то что и следовало доказать. В качестве дополнительного доказательства правильной работы критерия построен график квантилей (Рис.4).
+	
+	\begin{figure}[H]
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    \caption{\texttt{Рис. 4. Q-Q plot для kstest}}
+    \end{figure}
+
+\qquad На рисунке 4 видно, что все квантили выстроились вдоль прямой под уголом в $45^o$, отсюда можно сделать вывод о том, что данные распределены нормально.
+
+\qquad Пусть есть гипотеза $H_0$: данные распределены по нормальному закону распределения. И альтернативная гипотеза $H_1$: данные распределены по распределению Коши. Найдём вероятность ошибки второго рода и вычислим мощность критерия.
+
+\qquad Ошибка воторого рода -- равна вероятности принять гипотезу $H_0$, когда на самом деле верна гипотеза $H_1$. Поэтому сгенерируем выборку размером схожую по размеру с исходными данными, которые были предствалены при предварительном анализе (Таблица 2), распределённую по Коши со стандартными параметрами (две последние ячейки в коде Приложения 2 №4) и сравним её с нормальным распределением с помощью функции \texttt{Python kstest}, проделаем эту операцию 100000 раз (выбирается такое значение, так как шанс того, что ошибка второго рода появится при 100000 повторений цикла велика). Данный тест проводился несколько раз результат был один и тот же.
+
+Erorr2 = 0.0
+
+\qquad Из этого делаем вывод, что критерий Колмогорова-Смирнова не разу не принял гипотезу $H_0$, когда верна $H_1$, таким образом вероятность ошибки второго рода крайне мала, тогда мощность критерия равна $W = 1 - \beta \sim 1$ (не ставлю знак = так как вероятность ошибки не исключена). Таким образом при выборке в 249 значений использование критерия Колмогорова-Смирнова является оправданным решением.
+
+\qquad Убедимся, что при малом размере выборке (к примеру 30) вероятность ошибки второго рода увеличится:
+
+Erorr2 = 0.27626
+
+\qquad Действительно, вероятность увеличиласть, а значит мощность критерия упала из чего делаем вывод, что объём выборки недостаточно велик.
+    
+\subsection{Проверка гипотезы на реальных данных}
+
+\qquad В предыдущем пункте с помощью программы из Приложения 2 (№3) был проведён предварительный анализ. В данном пункте непосредственно проверяется аппроксимация логарифмических доходностей (распределённых по нормальному закону), распределением Стьюдента.
+
+\qquad Проверим наши данные на нормальность по критерию Колмогорова-Смирнова, для этого для каждой выборки вычисляем параметры $\bar X, \sigma$ с помощью функции \texttt{fit} после чего подставляем наши данные в \texttt{kstest} и запишем это всё в таблицу 3, в качестве наглядной демонстрации приведён график квантилей \texttt(Q-Q plot).
+
+\begin{table}
+\begin{center} \texttt{ \scalebox{0.7}{
+\begin{tabular}{|c|c|c|}
+\hline 
+Название компании & Статистика & P-value \\ 
+\hline 
+Лукойл & 0.04951199969959785 & 0.56826541716372 \\ 
+\hline 
+Газпром ао & 0.05033628135327872 & 0.5450499663119586 \\ 
+\hline 
+ВТБ ао & 0.06473505702329752 & 0.23564039613980037 \\ 
+\hline 
+Сбербанк & 0.0786060955346849 & 0.08626822801171885 \\ 
+\hline 
+Акрон & 0.08138173367445611 & 0.06893267012125115 \\ 
+\hline 
+\end{tabular} }}	
+\end{center}
+\caption{\texttt{Таблица 3. Таблица p-value}}
+\end{table}
+
+В соответствующем порядке Q-Q plot:
+
+\begin{figure}[H]
+	\begin{center}
+		\animategraphics[controls = step, loop]{0.8}{QQplotprac}{1}{5}
+	\end{center}
+	\caption{\texttt{Анимация 4. Q-Q plot логдоходностей}}
+\end{figure}
+    
+\qquad Из результатов теста видно, что \texttt{p-value} во всех случаях больше чем $\alpha$(0.05), следовательно гипотеза $H_0$ о нормальности принимается. Графики квантилей (Анимация 4) расположены вдоль прямой под углом в $45_o$, что говорит об их нормальности.
+
+\qquad Следующим этапом построим графики плотностей (Анимация 10), для этого придётся масштабировать данные из нашей выборки (в силу того, что выборка смещена и имеет не стандартные параметры). После чего построим функцию плотности нормального распределения и распределения Стьюдента с $n$ степенями свободы (код в Приложении 2 №5 использует интерактивный режим, где можно с помощью ползунка менять число степеней свободы и выбирать компании, в зависимости от этого будут меняться данные и итоговые результаты критерия Колмогорова-Смирнова и \texttt{Q-Q plot} об однородности выборок). Так как в гипотезе курсовой нужно убедиться в том, что при достаточно больших $n$ можно использовать альтернативный закон Стьюдента вместо нормального, то сравним две выборки с помощью критерия Колмогорова-Смирнова на однородность и построим график квантилей (Анимация 5 - 9). Результаты теста, а именно \texttt{p-value}, можно посмотреть в верхнем левом углу графика \texttt{Q-Q plot} для каждой компании.
+
+{\animategraphics[controls, loop, width={0.5\linewidth}, buttonsize = 1em]{10}{qqplotLKOH}{3}{100}}
+{\animategraphics[controls, loop, width={0.5\linewidth}, buttonsize = 1em]{10}{qqplotGAZP}{3}{100}}
+{\animategraphics[controls, loop, width={0.5\linewidth}, buttonsize = 1em]{10}{qqplotVTBR}{3}{100}}
+{\animategraphics[controls, loop, width={0.5\linewidth}, buttonsize = 1em]{10}{qqplotSBER}{3}{100}}
+\begin{figure}[H]
+\begin{center}
+\animategraphics[controls, loop, width={0.5\linewidth}, buttonsize = 1em]{10}{qqplotAKRN}{3}{100}
+\end{center}
+\caption{\texttt{Анимация 5 - 9. LKOH, GAZP, VTBR, SBER, AKRN}}
+\end{figure}
+
+\qquad Заметим, что графики (Анимация 10) плотностей имеют не совсем симметричные, хвосты это связано с тем,  что не все данные симметричны относительно выборочного среднего. Но в результате можно наблюдать, что графики плотностей нормально распределенных логдоходностей и распределения Стьюдента, а также квантилей, зрительно не отличимы друг от друга при достаточно больших степенях свободы, что говорит о хорошей аппроксимации. Конечно, нам больше интересны значения, которые показывает критерий Колмоговрова-Смирнова для этих плотностей (\texttt{ks\_ 2samp}). Приведу таблицу (Таблица 4), где выпишу количество степеней свободы и первое значение \texttt{p-value}, которое превысило значение уровня значимости $\alpha = 0.05$.
+
+\begin{table}[H]
+\begin{center} \texttt{
+\begin{tabular}{|c|c|c|}
+\hline 
+Название компании & Степень свободы & \texttt{p-value} \\ 
+\hline 
+Лукойл & 11 & 0.06396160287199748 \\ 
+\hline 
+Газпром ао & 30 & 0.050238747249888284 \\ 
+\hline 
+ВТБ & 12 & 0.050238747249888284 \\ 
+\hline 
+Сбербанк & 16 & 0.050238747249888284 \\ 
+\hline 
+Акрон & 13 & 0.050238747249888284 \\ 
+\hline 
+\end{tabular}  }
+\end{center}
+\caption{\texttt{Таблица 4. Минимальные степени свободы}}
+\end{table}
+
+\qquad Видно, что степени свободы разные, отсюда делаем вывод, что данные аппроксимируются с разной скоростью. Например, данные взятые по компании "<Газпром ао"> достигают заданного значения при $n = 30$, в то время как остальные не превышают 20. Приведём графики (Анимация 10) плотности нормального распределения и распределения Стьюдента с $n$ степенями свободы взятые из таблицы, а также построю гистограмму относительных частот.
+
+\begin{figure}[H]
+	\begin{center}
+		\animategraphics[controls = step, loop]{0.8}{pdf}{1}{5}
+	\end{center}
+\caption{\texttt{Анимация 10. Функции плотности и гистограмма отн. частот}}
+\end{figure}
+
+\section{Заключение}
+\qquad В результате проведённых расчётов можно сделать вывод о том, что гипотеза об аппроксимации распределением Стьюдента нормально распределённых логорифмических доходностей данных, подтвердилась, хоть хвосты были не везде симметричны, но всё же можно использовать в качестве альтернативы распределение Стьюдента при достаточно большом количестве $n$ степеней свободы.
+
+\qquad Если посмотреть на плотность распределения при малом количестве степеней свободы, то преимуществом использования распределения Стьюдента в отличие от устойчивых законов заключается в его тяжёлых хвостах, что также полезно при описании больших рисков. Ещё одним важным преимуществом распределения Стьюдента является его независимость от параметров генеральной совокупности, то есть нам достаточно только задать довольно-таки большое количество степеней свободы.
+
+\qquad Полученные результаты будут выполняться не только для фондового рынка, но и для любого другого рынка на котором встречается нормальность. Более того, нормальность появляется: при измерении погрешностей вычислений приборов, при измерении роста или веса людей, а так же во многих других сферах жизни можно применять распределение Стьюдента, как альтернативу нормальному закону.
+
+\qquad Подведём итоги курсовой работы. Были проанализированы логдоходности акций компаний, торгующих на Московской Бирже, также продемонстрирована работа критерия Колмогорова-Смирнова и графика квантилей \texttt{Q-Q plot}. Проверена гипотеза об аппроксимации распределением Стьюдента.
+
+\newpage
+% даём указание на включение данного место в оглавление как секции (\section)
+\addcontentsline{toc}{section}{Список используемой литературы}
+%далее сам список используевой литературы
+\begin{thebibliography}{}
+    \bibitem{litlink1}  Б. Ю. Лемешко, С. Б. Лемешко, С. Н. Постовалов \textit{СРАВНИТЕЛЬНЫЙ АНАЛИЗ МОЩНОСТИ КРИТЕРИЕВ
+СОГЛАСИЯ ПРИ БЛИЗКИХ КОНКУРИРУЮЩИХ
+ГИПОТЕЗАХ. I. ПРОВЕРКА ПРОСТЫХ ГИПОТЕЗ} --- 2008, Сибирский журнал
+индустриальной математики --- P. 97--98.
+    \bibitem{litlink2}  Eric Zivot \textit{Descriptive Statistics for
+Financial Data} --- 2015, --- P. 23--24.
+    \bibitem{litlink3}  \href{https://www.finam.ru}{https://www.finam.ru}
+    \bibitem{litlink3}  \href{https://ru.wikipedia.org}{https://ru.wikipedia.org}
+\end{thebibliography}
+
+
+\newpage
+
+\section{Приложение 1}
+\begin{itemize}
+\item Тип процессора -- Intel(R) Core(TM) i5-8250
+\item Тактовая частота -- CPU @ 1.60GHz 1.80 GHz
+\item Частота системной шины -- 8 GT/s DMI
+\item Объём кэша второго уровня -- 9216 Кб
+\end{itemize}
+
+\section{Приложениe 2}
+\textbf{№1}
+
+\prompt{In}{incolor}{1} 
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# библиотеки
+import numpy as np
+import scipy.stats as st
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{2}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# задаём данные для двух законов
+x = np.linspace(-8, 8, 200)
+# строим график
+plt.plot(x, st.norm.pdf(x, 0, 1), 'r', alpha = 0.6, label = r'N(0, 1)')
+plt.plot(x ,st.t.pdf(x, 1), 'black', alpha = 0.6, label = 't DF = 1')
+plt.plot(x ,st.t.pdf(x, 3), 'g', alpha = 0.6, label = 't DF = 3')
+plt.plot(x ,st.t.pdf(x, 6), 'y', alpha = 0.6, label = 't DF = 5')
+plt.plot(x ,st.t.pdf(x, 20), 'orange', alpha = 0.6, label = 't DF = 20')
+plt.plot(x ,st.t.pdf(x, 100), 'b', alpha = 0.6, label = 't DF = 100')
+plt.xlabel('Статистика')
+plt.ylabel('Плотность')
+plt.legend(loc='upper right')
+plt.title('t распределение с n степенью свободы')
+plt.grid()
+plt.show()
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+\textbf{№ 2}
+
+\prompt{In}{incolor}{28}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+import pandas as pd
+import scipy.stats as st
+from IPython.display import display, Math
+from scipy.stats import kstest
+import matplotlib.pyplot as plt
+import numpy as np
+import pylab 
+import statsmodels.api as sm
+from ipywidgets import interact
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{29}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+def qqplot(test1 , test2):
+    test1.sort()
+    quantile_levels1 = np.arange(len(test1),dtype=float)/len(test1)
+
+    test2.sort()
+    quantile_levels2 = np.arange(len(test2),dtype=float)/len(test2)
+
+    quantile_levels = quantile_levels2
+
+    quantiles2 = test2
+
+    quantiles1 = np.interp(quantile_levels,quantile_levels1,test1)
+
+    pylab.plot(quantiles1,quantiles2, '-')
+
+    maxval = max(test1[-1],test2[-1])
+    minval = min(test1[0],test2[0])
+    pylab.plot([minval,maxval],[minval,maxval],'-.')
+    pylab.show()
+  
+def f(df):
+    mu, sigma = 0, (df/(df - 2))**(0.5)
+    x = np.random.normal(mu, sigma, 10000)
+    x = sorted(x)
+    x = [(x[i] - mu)/sigma for i in range(len(x))]
+    plt.plot(x, st.norm.pdf(x, mu, sigma), 'r', alpha = 0.6, label = r'$N(0, \sigma_y)$')
+    plt.plot(x, st.t.pdf(x, df), 'b', alpha = 0.6, label = 't - distribution')
+    plt.legend(loc='upper right')
+    plt.title(r'$\sigma_y = \sqrt{v/(v-2)}$')
+    plt.grid()
+    plt.show()
+    test1 = st.norm.pdf(x, mu, sigma)
+    test2 = st.t.pdf(x, df)
+    qqplot(test1, test2)
+    x = np.random.normal(0, 1, 10000)
+    x = sorted(x)
+    plt.plot(x, st.norm.pdf(x, 0, 1), 'r', alpha = 0.6, label = r'$N(0, 1)$')
+    plt.plot(x, st.t.pdf(x, df), 'b', alpha = 0.6, label = 't - distribution')
+    plt.legend(loc='upper right')
+    plt.title(r'$\sigma_y = 1$')
+    plt.grid()
+    plt.show()
+    test1 = st.norm.pdf(x)
+    test2 = st.t.pdf(x, df)
+    qqplot(test1, test2)
+
+
+  
+interact(f, df = (3, 100))
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+\textbf{№3}
+
+\prompt{In}{incolor}{215}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# нужные библиотеки
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np 
+import pylab 
+import scipy.stats as stats
+from scipy.stats import kstest
+import pandas as pd
+from datetime import datetime
+import scipy.stats as st
+from IPython.display import display, Math
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{211}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# преобразлвание в latex таблицу
+def _repr_latex_(self):
+    return r'\begin{center}\scalebox{0.7}{%s}\end{center}' % self.to_latex()
+
+pd.set_option('display.notebook_repr_html', True)
+pd.DataFrame._repr_latex_ = _repr_latex_
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{212}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# тикеры и года
+tickers = [['LKOH_000105_190314', 2012], ['GAZP_000105_190314', 2015], ['VTBR_000105_190314', 2015],
+           ['SBER_000105_190314', 2013], ['AKRN_000105_190314', 2017]]
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{291}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# чтение данных и предварительный анализ данных
+def read_txt(Datafile, ticker):
+    data = pd.read_csv(Datafile + ticker[0] + '.txt', sep = ',', header = 0)
+    data = data.dropna() # удаление NaN
+    # фильтруем по дате
+    data['<DATE>'] = pd.to_datetime(data['<DATE>'], format='%Y%m%d')
+    condition = (data['<DATE>']>=datetime(ticker[1], 1, 1)) & (data['<DATE>']<datetime(ticker[1] + 1, 1, 1))
+    data = data['<CLOSE>'][condition]
+    # графики
+    plt.plot(np.arange(0, data.shape[0], 1), data, alpha = 0.6, label = ticker[0][0:4])
+    plt.xlabel('Рабочих дней')
+    plt.ylabel('Цена')
+    plt.legend(loc='upper right')
+    plt.title('Цены закрытия акций компании' + ticker[0][0:4])
+    plt.grid()
+    plt.show()
+    data = sorted(data)
+    return data
+
+# компании
+LKON = GAZP = VTBR = SBER = AKRN = pd.DataFrame()
+list_of_data = [LKON, GAZP, VTBR, SBER, AKRN]
+for i in range(len(list_of_data)):
+    list_of_data[i] = read_txt(Datafile, tickers[i])
+list_of_data = pd.DataFrame(list_of_data)
+list_of_data = pd.DataFrame(np.asarray(list_of_data).T.tolist(), columns = ['LKOH', 'GAZP', 'VTBR', 'SBER', 'AKRN'])
+# делаем столбцы одинаковой длинны
+list_of_data = list_of_data.dropna()
+list_of_data
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+\textbf{№ 4}
+ 
+\prompt{In}{incolor}{39}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+import pandas as pd
+import scipy.stats as st
+from IPython.display import display, Math
+from scipy.stats import kstest
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{47}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+sns.set()
+# преобразлвание в latex таблицу
+def _repr_latex_(self):
+    return r'\begin{center}\scalebox{0.7}{%s}\end{center}' % self.to_latex()
+
+pd.set_option('display.notebook_repr_html', True)
+pd.DataFrame._repr_latex_ = _repr_latex_
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{48}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# генерируем выборку
+x = np.random.normal(0, 1, 249)
+x = sorted(x)
+# вычисляем выборочное среднее и стандартное отклонение
+x_, sigma = st.norm.fit(x)
+
+table = pd.DataFrame()
+
+table['x'] = x
+table['i/n'] = [i/len(x) for i in range(1, len(x) + 1)]
+table['(i-1)/n'] = [(i-1)/len(x) for i in range(1, len(x) + 1)]
+# c параметрами из теоретического распределения
+table['F(x)'] = [st.norm.cdf(x[i], x_, sigma) for i in range(len(x))]
+table['i/n - F(x)'] = table['i/n'] - table['F(x)']
+table['F(x) - (i-1)/n'] = table['F(x)'] - table['(i-1)/n']
+# Статистики
+D_plus = max(table['i/n - F(x)'])
+D_minus = max(table['F(x) - (i-1)/n'])
+D_res = max(D_plus, D_minus)
+display(Math(r'\text{Cтатистика посчитанная вручную = }' + str(D_res)))
+display(Math(r'\text{Cтатистика через kstest = }' + str(kstest(x,'norm', [x_, sigma])[0])))
+table
+\end{minted}
+\end{tcolorbox}
+\codefalse
+    
+\prompt{In}{incolor}{49}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+display(Math(r'\text{p-value = }' + str(kstest(x,'norm', [x_, sigma])[1])))
+\end{minted}
+\end{tcolorbox}
+\codefalse
+    
+\qquad Таблица с расчётом статистики не использую готовый алгорим \texttt{scipy.stats.kstest}  
+    
+    \begin{center}{\begin{tabular}{lrrrrrr}
+\toprule
+{} &         x &       i/n &   (i-1)/n &      F(x) &  i/n - F(x) &  F(x) - (i-1)/n \\
+\midrule
+0   & -2.966029 &  0.004016 &  0.000000 &  0.000596 &    0.003420 &        0.000596 \\
+1   & -2.845247 &  0.008032 &  0.004016 &  0.000924 &    0.007108 &       -0.003092 \\
+2   & -2.426599 &  0.012048 &  0.008032 &  0.003768 &    0.008280 &       -0.004264 \\
+3   & -2.347094 &  0.016064 &  0.012048 &  0.004822 &    0.011242 &       -0.007226 \\
+4   & -2.277897 &  0.020080 &  0.016064 &  0.005946 &    0.014135 &       -0.010119 \\
+5   & -2.219741 &  0.024096 &  0.020080 &  0.007063 &    0.017033 &       -0.013017 \\
+6   & -2.039163 &  0.028112 &  0.024096 &  0.011799 &    0.016313 &       -0.012297 \\
+7   & -1.982912 &  0.032129 &  0.028112 &  0.013752 &    0.018377 &       -0.014360 \\
+8   & -1.973968 &  0.036145 &  0.032129 &  0.014087 &    0.022058 &       -0.018042 \\
+9   & -1.800363 &  0.040161 &  0.036145 &  0.022121 &    0.018040 &       -0.014024 \\
+10  & -1.770142 &  0.044177 &  0.040161 &  0.023856 &    0.020321 &       -0.016305 \\
+\ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\
+238 &  1.604611 &  0.959839 &  0.955823 &  0.942799 &    0.017040 &       -0.013024 \\
+239 &  1.630817 &  0.963855 &  0.959839 &  0.945901 &    0.017954 &       -0.013938 \\
+240 &  1.853764 &  0.967871 &  0.963855 &  0.967222 &    0.000650 &        0.003366 \\
+241 &  1.873228 &  0.971888 &  0.967871 &  0.968696 &    0.003191 &        0.000825 \\
+242 &  2.022915 &  0.975904 &  0.971888 &  0.978299 &   -0.002395 &        0.006411 \\
+243 &  2.041415 &  0.979920 &  0.975904 &  0.979291 &    0.000629 &        0.003387 \\
+244 &  2.053785 &  0.983936 &  0.979920 &  0.979933 &    0.004003 &        0.000013 \\
+245 &  2.126347 &  0.987952 &  0.983936 &  0.983368 &    0.004584 &       -0.000568 \\
+246 &  2.197699 &  0.991968 &  0.987952 &  0.986242 &    0.005726 &       -0.001710 \\
+247 &  2.621306 &  0.995984 &  0.991968 &  0.995985 &   -0.000001 &        0.004017 \\
+248 &  2.918845 &  1.000000 &  0.995984 &  0.998484 &    0.001516 &        0.002500 \\
+\bottomrule
+\end{tabular}
+}\end{center}
+
+\prompt{In}{incolor}{28}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+error2 = 0
+for i in range(100000):
+    x = np.random.standard_cauchy(size=249)
+    x_, sigma = st.norm.fit(x)
+    if kstest(x, 'norm', [x_, sigma])[1] >= 0.05:
+        error2 += 1
+        print(x_, sigma)
+print('Erorr2 =', error2/100000)
+\end{minted}
+\end{tcolorbox}
+\codefalse
+    
+\prompt{In}{incolor}{29}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+error2 = 0
+for i in range(100000):
+    x = np.random.standard_cauchy(size=30)
+    x_, sigma = st.norm.fit(x)
+    if kstest(x, 'norm', [x_, sigma])[1] >= 0.05:
+        error2 += 1
+print('Erorr2 =', error2/100000)
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+\textbf{Продолжение №3 (№5)}
+
+\prompt{In}{incolor}{292}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+# библиотеки
+import pandas as pd
+import scipy.stats as st
+from IPython.display import display, Math
+from scipy.stats import kstest
+import matplotlib.pyplot as plt
+import numpy as np
+import pylab 
+import statsmodels.api as sm
+from ipywidgets import interact
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+    
+\prompt{In}{incolor}{296}
+\codetrue
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm, colback=cellbackground, colframe=cellborder]
+\begin{minted}[breaklines=True, fontsize = \small]{python3}
+def qqplot(test1 , test2):
+    test1.sort()
+    quantile_levels1 = np.arange(len(test1),dtype=float)/len(test1)
+
+    test2.sort()
+    quantile_levels2 = np.arange(len(test2),dtype=float)/len(test2)
+
+    quantile_levels = quantile_levels2
+
+    quantiles2 = test2
+
+    quantiles1 = np.interp(quantile_levels,quantile_levels1,test1)
+
+    pylab.plot(quantiles1,quantiles2, '-')
+
+    maxval = max(test1[-1],test2[-1])
+    minval = min(test1[0],test2[0])
+    pylab.plot([minval,maxval],[minval,maxval],'-.')
+    pylab.grid()
+    pylab.show()
+  
+def f(df, ticker):
+    x_ = list_of_data[ticker].mean()
+    sigma = list_of_data[ticker].std()
+    print('Тест Колмогорова Смирнова (норм.) =', kstest(list_of_data[ticker], 'norm', [x_, sigma]))
+    st.probplot(list_of_data[ticker], dist="norm", plot=plt)
+    plt.grid()
+    plt.show()
+    list_of_data[ticker] = (list_of_data[ticker] - x_)/sigma
+    plt.plot(list_of_data[ticker], st.norm.pdf(list_of_data[ticker], x_, sigma), 'r', alpha = 0.6, label = r'$N(0, 1)$')
+    plt.plot(list_of_data[ticker], st.t.pdf(list_of_data[ticker], df), 'green', linestyle = '--', alpha = 0.6, label = 'DF = {}'.format(df))
+    plt.xlabel('Цены закрытия')
+    plt.ylabel('Плотность')
+    plt.legend(loc='upper right')
+    plt.title('t-распределение с n степенью свободы ' + str(ticker))
+    plt.grid()
+    plt.show()
+    print('Тест Колмогорова Смирнова (однородность) =', st.ks_2samp(st.norm.pdf(list_of_data[ticker], x_, sigma), st.t.pdf(list_of_data[ticker], df)))
+    test1 = st.norm.pdf(list_of_data[ticker])
+    test2 = st.t.pdf(list_of_data[ticker], df)
+    qqplot(test1, test2)
+
+interact(f, df = (3, 100), ticker = ['LKOH', 'GAZP', 'VTBR', 'SBER', 'AKRN'])
+\end{minted}
+\end{tcolorbox}
+\codefalse
+
+\section{Приложения 3}
+
+Презентация.pdf\\
+LKOH\_ 000105\_ 190314.txt\\
+SBER\_ 000105\_ 190314.txt\\
+GAZP\_ 000105\_ 190314.txt\\
+AKRN\_ 000105\_ 190314.txt\\
+VTBR\_ 000105\_ 190314.txt\\
+№3-5 Предварительный анализ данных.ipynb\\
+№4 Проверка критерия Колмогорова-Смирнова.ipynb\\
+№1 Аппроксимация.ipynb\\
+№2 Нормальное распределение с сигмой.ipynb\\
+
+    }
+    \end{document}
