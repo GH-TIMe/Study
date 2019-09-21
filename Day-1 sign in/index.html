@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign in</title>
+  <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="js/jquery-1.4.1.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+        $("body").css("display", "none");
+
+        $("body").fadeIn(2000);
+
+    	$("a.transition").click(function(event){
+    		event.preventDefault();
+    		linkLocation = this.href;
+    		$("body").fadeOut(1000, redirectPage);
+    	});
+
+    	function redirectPage() {
+    		window.location = linkLocation;
+    	}
+    });
+  </script>
+</head>
+<body>
+  <form action="page2/index2.html" class="login-form" method="post">
+    <h1>Welcome to daily plant!</h1>
+    <a href="page2/index2.html" class="transition">
+      <input type="submit" value="Sign in">
+    </a>
+  </form>
+</body>
+</html>
