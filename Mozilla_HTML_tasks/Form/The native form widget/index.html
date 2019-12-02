@@ -218,6 +218,25 @@
       <input type="file" accept="audio/*;capture=microphone" name="file_mice" id="file_mice">
       </li>
     <ul>
+    <p>
+      <input type="hidden" id="timestamp" name="timestamp" value="1286705410">
+    </p>
+    <p>
+      <progress max="100" value="75">75/100</progress>
+    </p>
+    <ul>
+      <li>
+        <label for="low">Low power</label>
+        <meter id="low" min = "0" max="100" value="10" low="15" high="70" optimum="100">10/100</meter>
+      </li>
+      <li>
+        <label for="med">Medium power</label>
+        <meter id="med" min = "0" max="100" value="50" low="15" high="70" optimum="100">50/100</meter>
+      </li>
+      <li>
+        <label for="hig">Low battery</label>
+        <meter id="hig" min = "0" max="100" value="75" low="15" high="70" optimum="100">75/100</meter></li>
+    </ul>
   </form>
   <script>
    var beans = document.querySelector('#beans');
